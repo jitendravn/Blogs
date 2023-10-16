@@ -13,8 +13,18 @@ $obj = new Model();
         }
         $file_name=$_FILES['image']['name'];
         $file_tmp=$_FILES['image']['tmp_name'];
+      // $im=$file_name;
+       $target_dir = "images/";
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $imageFileType=strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+&& $imageFileType != "gif" ) {
+  echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+}else{
        $im=$file_name;
        move_uploaded_file($file_tmp, "images/" . $file_name);
+    }
+      // move_uploaded_file($file_tmp, "images/" . $file_name);
     }
     $obj->updateRecord($_POST,$im);
  }//if isset close
@@ -46,8 +56,13 @@ $obj = new Model();
 max-width: 200px;
         }
     </style>
+  
 </head>
 <body>
+    <div class="container my-5">
+        <h1>Insert Data : <a href="create.php" class="btn btn-warning">Insert</a></h1>
+    
+    </div>
 <?php
 if(isset($_GET['editid'])){?>
     <?php
@@ -55,18 +70,19 @@ if(isset($_GET['editid'])){?>
     $myrecord=$obj->displayRecordById($editid);
     ?>
     <div class="container">
-   <form action="" method="post" enctype="multipart/form-data">
+   <form action="" method="post" enctype="multipart/form-data" >
             <div class="form-group">
                 <label>Blog Name </label>
-                <input type="text" name="name" value="<?php echo $myrecord['bname']; ?>" placeholder="Enter Your Name " class="form-control ">
+                <input type="text" name="name" value="<?php echo $myrecord['bname']; ?>" placeholder="Enter Your Name " class="form-control " required>
             </div>
             <div class="form-group">
                 <label>Description</label>
-                <textarea type="text" name="des" class="form-control " > <?php echo $myrecord['bdes']; ?></textarea>
+                <textarea type="text" name="des" class="form-control " required > <?php echo $myrecord['bdes']; ?></textarea>
             </div>
             <div class="form-group">
                 <label> Select image to upload:</label>
-                <input  type="file" name="image" class="form-control " value="<?php echo $myrecord['images']; ?>">
+                <input  type="file" name="image" class="form-control " value="<?php echo $myrecord['images']; ?>" accept="image/*">
+                <img src="images/<?php echo $myrecord['images']; ?>" alt="images">
             </div>
 
 
@@ -102,9 +118,9 @@ if(isset($_GET['editid'])){?>
                 <td><img src="./images/<?php echo $value['images']; ?>" alt="img" class="img-fluid"></img></td>
                 <td>
                     <a href="list.php?editid=<?php echo $value['id']; ?>" class="btn btn-info">Edit</a>
-                    <a href="list.php?deleteid=<?php echo $value['id']; ?>" class="btn btn-danger">Delete</a>
-                    <a href="view.php?viewid=<?php echo $value['id']; ?>" class="btn btn-success">View</a>
-                    <a href="create.php" class="btn btn-warning">Insert</a>
+                    <a class="btn btn-danger" onclick="alert()">Delete</a>
+                    <a href="view.php?viewid=<?php echo $value['id']; ?>"  class="btn btn-success">View</a>
+                  
                 </td>
             </tr>
             <?php
@@ -113,7 +129,38 @@ if(isset($_GET['editid'])){?>
             ?>
         </table> 
      
-     
+        <script>
+
+function alert() {
+  // define a new variable
+  if(confirm("This is Delete!")){
+    window.location = `list.php?deleteid=<?php echo $value['id']; ?>`;
+  }
+}
+
+const validation = (e)=>{
+            const name = document.insertForm.name.value;
+            const des = document.insertForm.des.value;
+          
+            document.getElementById('nameWarn').innerHTML = "";
+            document.getElementById('desWarn').innerHTML = "";
+         
+            document.getElementById('name').classList.remove('outline');
+            document.getElementById('des').classList.remove('outline');
+           
+            if(name.length>50 || name==""){
+                document.getElementById('name').classList.add('outline');
+                document.getElementById('nameWarn').innerHTML = "Name must not greater than 50 characters and cannot blank.";
+                return false;
+            }
+            if(des.length<=150 || des==null){
+                document.getElementById('des').classList.add('outline');
+                document.getElementById('desWarn').innerHTML = "Description must be greater than 150 characters and cannot be blank.";
+                return false;
+            }
+           
+        }
+  </script>    
 
 </body>
 </html>

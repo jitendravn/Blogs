@@ -10,8 +10,16 @@ $obj=new Model();
     if(isset($_FILES['image'])){
         $file_name=$_FILES['image']['name'];
         $file_tmp=$_FILES['image']['tmp_name'];
+        $target_dir = "images/";
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        $imageFileType=strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+&& $imageFileType != "gif" ) {
+  echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+}else{
        $img=$file_name;
        move_uploaded_file($file_tmp, "images/" . $file_name);
+    }
     }
     $obj->insertRecord($_POST,$img);
  }//if isset close
@@ -51,11 +59,12 @@ $obj=new Model();
     <br>
     <h2 class="text-center text-info">Blog Website</h2>
     <br>
-   <div class="container">
-   <form action="" method="post" enctype="multipart/form-data">
+     <div class="container">
+            
+   <form name="insertForm" action="" method="post" enctype="multipart/form-data" onsubmit="return validation()" >
             <div class="form-group">
                 <label>Blog Name </label>
-                <input type="text" name="name" placeholder="Enter Your Name " class="form-control ">
+                <input type="text" name="name" placeholder="Enter Your Name " class="form-control " required>
             </div>
             <div class="form-group">
                 <label>Description</label>
@@ -63,7 +72,7 @@ $obj=new Model();
             </div>
             <div class="form-group">
                 <label> Select image to upload:</label>
-                <input  type="file" name="image" class="form-control ">
+                <input  type="file" name="image" class="form-control " >
             </div>
 
 
@@ -80,6 +89,31 @@ $obj=new Model();
 
         </form>
    </div>
+   <script>
+   const validation = (e)=>{
+       const name = document.insertForm.name.value;
+       const des = document.insertForm.des.value;
+       
+            document.getElementById('nameWarn').innerHTML = "";
+            document.getElementById('desWarn').innerHTML = "";
+         
+            document.getElementById('name').classList.remove('outline');
+            document.getElementById('des').classList.remove('outline');
+            
+            if(name.length>50 || name==""){
+            
+                document.getElementById('name').classList.add('outline');
+                document.getElementById('nameWarn').innerHTML = "Name must not greater than 50 characters and cannot blank.";
+                return false;
+            }
+            if(des.length<=150 || des==null){
+                document.getElementById('des').classList.add('outline');
+                document.getElementById('desWarn').innerHTML = "Description must be greater than 150 characters and cannot be blank.";
+                return false;
+            }
+           
+        }
+  </script>   
 </body>
 
 </html>
