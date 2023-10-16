@@ -70,14 +70,16 @@ if(isset($_GET['editid'])){?>
     $myrecord=$obj->displayRecordById($editid);
     ?>
     <div class="container">
-   <form action="" method="post" enctype="multipart/form-data" >
+   <form action="" method="post" enctype="multipart/form-data" onsubmit="return validation()"  >
             <div class="form-group">
                 <label>Blog Name </label>
-                <input type="text" name="name" value="<?php echo $myrecord['bname']; ?>" placeholder="Enter Your Name " class="form-control " required>
+                <input type="text" id="name"  name="name" value="<?php echo $myrecord['bname']; ?>" placeholder="Enter Your Name " class="form-control " required>
+                <div id="nameWarn" class="form-text text-danger"></div>
             </div>
             <div class="form-group">
                 <label>Description</label>
-                <textarea type="text" name="des" class="form-control " required > <?php echo $myrecord['bdes']; ?></textarea>
+                <textarea type="text"  id="des" name="des" class="form-control " required > <?php echo $myrecord['bdes']; ?></textarea>
+                <div id="nameWarn" class="form-text text-danger"></div>
             </div>
             <div class="form-group">
                 <label> Select image to upload:</label>
@@ -153,9 +155,9 @@ const validation = (e)=>{
                 document.getElementById('nameWarn').innerHTML = "Name must not greater than 50 characters and cannot blank.";
                 return false;
             }
-            if(des.length<=150 || des==null){
+            if(des.length<=20 || des==null){
                 document.getElementById('des').classList.add('outline');
-                document.getElementById('desWarn').innerHTML = "Description must be greater than 150 characters and cannot be blank.";
+                document.getElementById('desWarn').innerHTML = "Description must be greater than 20 characters and cannot be blank.";
                 return false;
             }
            
