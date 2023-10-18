@@ -92,9 +92,11 @@ class Model extends Coonnection
         }
     }
 
-    public function displayRecord()
+    public function displayRecord($page = 1)
     {
-        $sql = "SELECT * FROM blogs";
+        $limit = 3;
+        $offset = ($page - 1) * $limit;
+        $sql = "SELECT * FROM blogs LIMIT {$offset},{$limit}";
         $result = $this->conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -162,7 +164,7 @@ class Model extends Coonnection
     {
         $likes = mysqli_real_escape_string($this->conn, $likeid);
         //$editid=['hid'];
-               $sql = "UPDATE blogs SET likes=`likes`+1 WHERE id='$likeid'";
+        $sql = "UPDATE blogs SET likes=`likes`+1 WHERE id='$likeid'";
         $result = $this->conn->query($sql);
         if ($result) {
             // header('location:list.php');
@@ -178,7 +180,7 @@ class Model extends Coonnection
 
         $already_liked_query = "SELECT * from likes WHERE email='$email' AND blogid='$blogid'";
         $already_liked = $this->conn->query($already_liked_query);
-          
+
         if ($already_liked->num_rows < 1) {
             $sql = "INSERT INTO likes(email,blogid) VALUES('$email','$blogid')";
             $result = $this->conn->query($sql);
@@ -205,20 +207,10 @@ class Model extends Coonnection
     }
     public function pageRecords($page)
     {
-        $limit =3;
-        $offset = ($page - 1) * $limit;
-        $sql = "SELECT * FROM blogs LIMIT {$offset},{$limit} ";
-        $result = $this->conn->query($sql);
-        $data=[];
-        if ($result->num_rows > 0) {
-            // $limit =3;
-            // $total_page=ceil($total_records / $limit) ;
-            while ($row = $result->fetch_assoc()) {
-                $data[] = $row;
-            }
-            
-        }
-        return $data;
-    }
 
+        $sql = "SELECT * FROM blogs ";
+        $result = $this->conn->query($sql);
+
+        return $result->num_rows;
+    }
 }
