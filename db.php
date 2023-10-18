@@ -104,6 +104,23 @@ class Model extends Coonnection
         }
     }
 
+
+    //  public function useridRecord($page)
+    // {
+    //     $limit =3;
+    //     $offset = ($page - 1) * $limit;
+    //     $sql = "SELECT * FROM blogs ORDER id LIMIT {$offset},{$limit}";
+    //     $result = $this->conn->query($sql);
+    //     if ($result > 0) {
+    //         while ($row = $result->fetch_assoc()) {
+    //             $data[] = $row;
+    //         }
+    //         return $data;
+    //     }
+    // }
+
+
+
     public function registerInsertRecord($post)
     {
         $username = mysqli_real_escape_string($this->conn, $post['username']);
@@ -186,4 +203,22 @@ class Model extends Coonnection
         }
         return false;
     }
+    public function pageRecords($page)
+    {
+        $limit =3;
+        $offset = ($page - 1) * $limit;
+        $sql = "SELECT * FROM blogs LIMIT {$offset},{$limit} ";
+        $result = $this->conn->query($sql);
+        $data=[];
+        if ($result->num_rows > 0) {
+            // $limit =3;
+            // $total_page=ceil($total_records / $limit) ;
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            
+        }
+        return $data;
+    }
+
 }

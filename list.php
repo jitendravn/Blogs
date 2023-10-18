@@ -58,6 +58,13 @@ if (isset($_GET['likeid'])) {
   $obj->likeUpdateRecord($blogid);
   $obj->insertLikesRecord($email, $blogid);
 } //if isset close
+if (isset($_GET['logout'])) {
+  session_unset();
+  session_destroy();
+  header('location:logins.php');
+}
+
+
 
 
 ?>
@@ -104,7 +111,7 @@ if (isset($_GET['likeid'])) {
 
         </ul>
         <form class="d-flex" role="search">
-          <a class="btn btn-outline-success" href="logins.php?login=true" type="submit">Logout</a>
+          <a class="btn btn-outline-success" href="list.php?logout=true" type="submit">Logout</a>
         </form>
       </div>
     </div>
@@ -149,19 +156,21 @@ if (isset($_GET['likeid'])) {
 
     <?php
     //Display Records 
-   
+
     $data = $obj->displayRecord();
+    $totalnumpage = $data;
+
     $sno = 1;
     foreach ($data as $value) {
-      
+
       $id = $value['id'];
       $email = $_SESSION['email'];
       $check = $obj->checkEmailid($email, $id);
-     $a = false;
-if ($check != null) {
-  $a = true;
-}
-      
+      $a = false;
+      if ($check != null) {
+        $a = true;
+      }
+
     ?>
 
 
@@ -181,23 +190,23 @@ if ($check != null) {
                   <a href="list.php?editid=<?php echo $value['id']; ?>" class="btn btn-dark">Edit</a>
                   <a class="btn btn-warning" onclick="alert()">Delete</a>
                   <a href="view.php?viewid=<?php echo $value['id']; ?>" class="btn btn-success">View</a>
-                  
+
                   <p><?php echo $value['likes']; ?></p>
-            
-                  <?php 
-                  if(!$a){
-                    echo '<a href="list.php?likeid='.$value['id'].'" class="btn btn-outline-danger">
+
+                  <?php
+                  if (!$a) {
+                    echo '<a href="list.php?likeid=' . $value['id'] . '" class="btn btn-outline-danger">
                     <span class="bi bi-hand-thumbs-up"> Like</span>
                     </a>';
-                  }else{
+                  } else {
                     echo '<a href="" class="btn btn-outline-danger">
                     <span class="bi bi-hand-thumbs-down"> UnLike</span>
                   </a>';
                   }
-                  
+
                   ?>
-                  
-                  
+
+
 
                 </div>
 
@@ -211,6 +220,60 @@ if ($check != null) {
     }
 
     ?>
+    <?php
+    $page = 1;
+    if (isset($_GET['page'])) {
+      $page = $_GET['page'];
+    } else {
+      $page = 1;
+    }
+    $pdata = $obj->pageRecords($page);
+    $limit = 3;
+
+
+    if (count($pdata) > 0) {
+      $total_records = count($pdata);
+
+      $total_page = ceil($total_records / $limit);
+
+      echo '<div class="container col-sm-12">';
+      echo '<nav aria-label="Page navigation example">';
+      echo '<ul class="pagination">';
+      if($page > 1){
+        echo ' <li class="page-item"><a class="page-link" href="list.php?page='.($page -1).'">Prev</a></li>';
+
+      }
+      for ($i = 1; $i <= $total_page; $i++) {
+        if ($i == $page) {
+          $active = "active";
+        } else {
+          $active = "";
+        }
+
+        echo '<li class="page-item ' . $active . '" ><a class="page-link" href="list.php?page=' . $i . '">' . $i . '</a></li>';
+      }
+if($total_page > $page){
+      echo ' <li class="page-item"><a class="page-link" href="list.php?page='.($page +1).'">Next</a></li>';
+    }
+      echo '</ul>';
+      echo '</nav>';
+      echo '</div>';
+    }
+
+
+    ?>
+    <!-- <div class="container col-sm-12">
+    <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+    </div>
+     -->
   </table>
 
   <script>

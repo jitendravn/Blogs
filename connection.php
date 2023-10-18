@@ -14,6 +14,10 @@ class Coonnection{
            // echo "connected ";
        }
    }
+   function dd($data){
+    var_dump($data);
+    die();
+   }
 
 }
 
