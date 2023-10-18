@@ -53,6 +53,14 @@ $obj=new Model();
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>   
+
+<link rel="stylesheet" href="/DataTables/datatables.css" />
+ 
+<script src="/DataTables/datatables.js"></script>
+
 </head>
 
 <body>
@@ -61,35 +69,35 @@ $obj=new Model();
     <br>
      <div class="container">
             
-   <form name="insertForm" action="" method="post" enctype="multipart/form-data" onsubmit="return validation()" >
-            <div class="form-group">
-                <label>Blog Name </label>
-                <input type="text" id="name" name="name" placeholder="Enter Your Name " class="form-control ">
-                <div id="nameWarn" class="form-text text-danger"></div>
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea type="text" id="des" name="des"  class="form-control " ></textarea>
-                <div id="desWarn" class="form-text text-danger"></div>
-            </div>
-            <div class="form-group">
-                <label> Select image to upload:</label>
-                <input  type="file" name="image" class="form-control " >
-            </div>
+    <form name="insertForm" action="" method="post" enctype="multipart/form-data" onsubmit="return validation()" >
+                <div class="form-group">
+                    <label>Blog Name </label>
+                    <input type="text" id="name" name="name" placeholder="Enter Your Name " class="form-control ">
+                    <div id="nameWarn" class="form-text text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea type="text" id="des" name="des"  class="form-control " ></textarea>
+                    <div id="desWarn" class="form-text text-danger"></div>
+                </div>
+                <div class="form-group">
+                    <label> Select image to upload:</label>
+                    <input  type="file" name="image" class="form-control " >
+                </div>
 
 
-            <div class="d-flex">
-                <input type="submit" name="submit" class="btn btn-primary ">
-                <!-- <input type="submit" name="update" value="Update" class="btn btn-primary "> 
-                <input type="submit" name="delete" value="Delete" class="btn btn-primary "> -->
-                <a href="list.php" class="btn btn-warning">All List</a>
-                <!-- <input type="submit" name="view" value="View" class="btn btn-primary "> -->
-            </div>
-            
+                <div class="d-flex">
+                    <input type="submit" name="submit" class="btn btn-primary ">
+                    <!-- <input type="submit" name="update" value="Update" class="btn btn-primary "> 
+                    <input type="submit" name="delete" value="Delete" class="btn btn-primary "> -->
+                    <a href="list.php" class="btn btn-warning">All List</a>
+                    <!-- <input type="submit" name="view" value="View" class="btn btn-primary "> -->
+                </div>
                 
-           
+                    
+            
 
-        </form>
+            </form>
    </div>
    <script>
    const validation = (e)=>{
